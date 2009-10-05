@@ -12,12 +12,13 @@ SRCROOT = .
 SYMROOT = .
 OBJROOT = .
 ARCHIVEROOT = ./bin-arch
+LIBDIRS = Csu-75
 
 LD = ld
 
 CFILES = hello.c 
+OBJFILES = 
 
-#arch = `uname -p`
 arch := $(shell uname -p)
 
 ifeq (powerpc,$(arch))
@@ -34,9 +35,7 @@ endif
 
 
 # default target for development builds
-all: $(ARCHIVEROOT) $(TARGETS)
-	echo $(TARGETS)
-#$(TEST)
+all: libcrt0 $(ARCHIVEROOT) $(TARGETS) $(TEST)
 
 # rules
 $(OBJROOT)/%.o : $(SRCROOT)/%.c
@@ -44,7 +43,6 @@ $(OBJROOT)/%.o : $(SRCROOT)/%.c
 	
 $(OBJROOT)/%.o : %.S
 	$(CC) -c $(CFLAGS_STATIC) $^ -o $@
-
 
 $(OBJROOT)/%.64.o : %.c
 	$(CC) -c $(CFLAGS_DYNAMIC) -m64 $^ -o $@
@@ -54,6 +52,11 @@ $(OBJROOT)/%.64.o : %.S
 
 $(ARCHIVEROOT):
 	mkdir $(ARCHIVEROOT)
+
+libcrt0:
+	@echo Compiling crt0 and Crt1...
+	cd $(LIBDIRS); make
+
 
 # targets
 hello-static: hello.o sys_exit.o sys_write.o
@@ -81,6 +84,7 @@ hello-static-fat: $(ARCHIVEROOT)/hello-static-i386 $(ARCHIVEROOT)/hello-static-p
 
 clean:
 	rm -f $(OBJROOT)/*.s $(OBJROOT)/*.o $(TARGETS)
+	-for d in $(DIRS); do (cd $$d; $(MAKE) clean ); done
 
 test: hello-static
 	@echo "====================="
