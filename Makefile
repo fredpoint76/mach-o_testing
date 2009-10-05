@@ -74,7 +74,7 @@ hello-static64: hello.64.o sys_exit_sysenter.64.o sys_write_sysenter.64.o
 hello-static-ppc: hello.o sys_exit_ppc.o sys_write_ppc.o
 	$(LD) $(CFLAGS_ARCH) $(LDFLAGS_STATIC) $^ -S -o $@.s
 	$(LD) $(CFLAGS_ARCH) $(LDFLAGS_STATIC) $^ -o $@ 
-	cp $@ $(ARCHIVEROOT)/$@-ppc
+	cp $@ $(ARCHIVEROOT)/$@
 
 hello-static-fat: $(ARCHIVEROOT)/hello-static-i386 $(ARCHIVEROOT)/hello-static-ppc
 	lipo -create $(ARCHIVEROOT)/hello-static-i386 $(ARCHIVEROOT)/hello-static-ppc -output hello-static-fat
