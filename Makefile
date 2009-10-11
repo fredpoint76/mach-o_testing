@@ -13,14 +13,12 @@ ifeq (powerpc,$(arch))
   CFLAGS_ARCH32 = -arch ppc
   CFLAGS_ARCH64 = -arch ppc64
   TARGETS = hello-static hello-static-fat
-  SFILES = sys_exit_ppc.S sys_write_ppc.S
   TEST = test-ppc
 else
  ifeq (i386,$(arch))
   CFLAGS_ARCH32 = -arch i386
   CFLAGS_ARCH64 = -arch x86_64
   TARGETS = hello-static hello-static-sysenter hello-static-fat
-  SFILES = sys_exit.S sys_write.S sys_exit_sysenter.S sys_write_sysenter.S
   TEST = test
  endif
 endif
