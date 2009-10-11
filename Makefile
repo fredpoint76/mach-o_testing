@@ -7,19 +7,22 @@ LDFLAGS_STATIC_64 = -static -L./Csu-75 -lcrt0.o
 LDFLAGS_DYNAMIC = -L./Csu-75 -lcrt1.o -lgcc_s.10.5 -lSystem
 
 
-arch := $(shell uname -p)
+TARGETS_ALL_ARCHS = hello-static hello-static-fat hello-dynamic
+SFILES = sys_exit.S sys_write.S
 
+
+arch := $(shell uname -p)
 ifeq (powerpc,$(arch))
   CFLAGS_ARCH32 = -arch ppc
   CFLAGS_ARCH64 = -arch ppc64
-  TARGETS = hello-static hello-static-fat
-  TEST = test-ppc
+  TARGETS = ${TARGETS_ALL_ARCHS}
+  TEST = test-powerpc
 else
  ifeq (i386,$(arch))
   CFLAGS_ARCH32 = -arch i386
   CFLAGS_ARCH64 = -arch x86_64
-  TARGETS = hello-static hello-static-sysenter hello-static-fat
-  TEST = test
+  TARGETS = ${TARGETS_ALL_ARCHS} hello-static-sysenter
+  TEST = test-x86
  endif
 endif
 
@@ -35,11 +38,6 @@ LD = ld
 
 CFILES = hello.c 
 OBJFILES = 
-
-
-TARGETS = hello-static hello-static-sysenter hello-static-fat hello-dynamic
-SFILES = sys_exit.S sys_write.S
-TEST = test
 
 
 # default target for development builds
@@ -109,23 +107,29 @@ clean:
 	rm -f $(OBJROOT)/*.s $(OBJROOT)/*.o $(TARGETS)
 	-for d in $(DIRS); do (cd $$d; $(MAKE) clean ); done
 
-test-ppc: hello-static
+test-powerpc: hello-static
 	@echo "====================="
 	@echo "Testing hello world with SC on PPC"
 	@./hello-static; echo Return: $$?
-	@echo -e "\n\n====================="
+	@echo 
+	@echo 
+	@echo "====================="
 	@echo "Testing hello world FAT file"
 	@./hello-static-fat; echo Return: $$?
 
 
-test: hello-static hello-static-sysenter
+test-x86: hello-static hello-static-sysenter
 	@echo "====================="
 	@echo "Testing hello world with INT 0x80"
 	@./hello-static; echo Return: $$?
-	@echo -e "\n\n====================="
+	@echo 
+	@echo 
+	@echo "====================="
 	@echo "Testing hello world with SYSENTER"
 	@./hello-static-sysenter; echo Return: $$?
-	@echo -e "\n\n====================="
+	@echo 
+	@echo 
+	@echo "====================="
 	@echo "Testing hello world FAT file"
 	@./hello-static-fat; echo Return: $$?
 
