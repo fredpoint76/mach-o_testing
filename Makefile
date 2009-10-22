@@ -11,7 +11,6 @@ LIBDIRS = Csu-75
 
 os := $(shell uname)
 
-#ifeq (Linux,$(os))
 ifneq (,$(filter Linux NetBSD,$(os)))
 LDFLAGS_STATIC = -static
 LDFLAGS_STATIC_64 = -static
@@ -32,8 +31,7 @@ ifeq (powerpc,$(arch))
   TARGETS = ${TARGETS_ALL_ARCHS}
   TEST = test-powerpc
 else
- #ifeq (i686,$(arch))
- ifeq (i386,$(arch))
+ ifneq (,$(filter i386 i486 i586 i686,$(arch)))
   CFLAGS_ARCH32 = -arch i386
   CFLAGS_ARCH64 = -arch x86_64
   TARGETS = ${TARGETS_ALL_ARCHS} hello-static-sysenter
