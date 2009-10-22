@@ -1,3 +1,8 @@
+#ifndef __APPLE__
+#define write _write
+#define exit _exit
+#endif
+
 extern int write(int fd, char *str, int len);
 extern void exit(int code);
 
