@@ -128,7 +128,7 @@ hello-dynamic: hello.o sys_exit.o sys_write.o
 .IGNORE: hello-static-fat
 
 hello-static-fat: $(ARCHIVEROOT)/hello-static-Darwin-i386 $(ARCHIVEROOT)/hello-static-Darwin-ppc
-	lipo -create $@ -output hello-static-fat
+	lipo -create $^ -output hello-static-fat
 
 clean:
 	rm -f $(OBJROOT)/*.s $(OBJROOT)/*.o $(TARGETS)
