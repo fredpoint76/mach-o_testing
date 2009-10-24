@@ -1,4 +1,5 @@
 #ifndef __APPLE__
+#define _start start
 #define write _write
 #define exit _exit
 #endif

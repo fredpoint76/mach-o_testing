@@ -16,15 +16,29 @@ LDFLAGS_STATIC = -static
 LDFLAGS_STATIC_64 = -static
 LDFLAGS_DYNAMIC =
 DIRS = 
+LD = gcc
 arch := $(shell uname -m)
+ifeq (powerpc,$(arch))
+  CFLAGS_ARCH32 = -march ppc
+  CFLAGS_ARCH64 = -march ppc64
+  TARGETS = ${TARGETS_ALL_ARCHS}
+  TEST = test-powerpc
+else
+ ifneq (,$(filter i386 i486 i586 i686,$(arch)))
+  CFLAGS_ARCH32 = -march=i386
+  CFLAGS_ARCH64 = -march=x86_64
+  TARGETS = ${TARGETS_ALL_ARCHS} hello-static-sysenter
+  TEST = test-x86
+ endif
+endif
+
 else
 LDFLAGS_STATIC = -static -L./Csu-75 -lcrt0.o
 LDFLAGS_STATIC_64 = -static -L./Csu-75 -lcrt0.o
 LDFLAGS_DYNAMIC = -L./Csu-75 -lcrt1.o -lgcc_s.10.5 -lSystem
 DIRS = $(LIBDIRS)
+LD = ld
 arch := $(shell uname -p)
-endif
-
 ifeq (powerpc,$(arch))
   CFLAGS_ARCH32 = -arch ppc
   CFLAGS_ARCH64 = -arch ppc64
@@ -38,6 +52,8 @@ else
   TEST = test-x86
  endif
 endif
+endif
+
 
 
 SRCROOT = .
@@ -45,7 +61,6 @@ SYMROOT = .
 OBJROOT = .
 ARCHIVEROOT = ./bin-arch
 
-LD = ld
 
 CFILES = hello.c 
 OBJFILES = 

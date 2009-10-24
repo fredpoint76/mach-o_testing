@@ -11,10 +11,16 @@ _exit:
 	blr
 
 #elif __i386__
-
 #ifdef SYSENTER
 
 _exit:
+#ifdef __linux__
+    movl    4(%esp), %ebx
+    movl    8(%esp), %ecx
+    movl    12(%esp), %edx
+    movl    16(%esp), %esi
+    movl    20(%esp), %edi
+#endif //__linux__
     movl    $1, %eax    # SYS_exit=1
     popl    %edx
     pushl   $0
@@ -24,9 +30,20 @@ _exit:
 #else
 
 _exit:
+#ifdef __linux__
+    movl    4(%esp), %ebx
+    movl    8(%esp), %ecx
+    movl    12(%esp), %edx
+    movl    16(%esp), %esi
+    movl    20(%esp), %edi
+#endif // __linux__
     movl    $1, %eax    # SYS_exit=1
     int     $0x80   #   call syscall
     ret
 
-#endif
-#endif
+#endif // SYSENTER
+#endif //__i386__
+
+
+
+
