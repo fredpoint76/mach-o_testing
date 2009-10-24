@@ -11,7 +11,7 @@ LIBDIRS = Csu-75
 
 os := $(shell uname)
 
-ifneq (,$(filter Linux NetBSD,$(os)))
+ifneq (,$(filter Linux NetBSD FreeBSD,$(os)))
 LDFLAGS_STATIC = -static
 LDFLAGS_STATIC_64 = -static
 LDFLAGS_DYNAMIC =
@@ -108,27 +108,27 @@ subdirs:
 hello-static: hello.static.o sys_exit.static.o sys_write.static.o
 	$(LD) $(CFLAGS_ARCH32) $(LDFLAGS_STATIC) $^ -S -o $@.s
 	$(LD) $(CFLAGS_ARCH32) $(LDFLAGS_STATIC) $^ -o $@
-	cp $@ $(ARCHIVEROOT)/$@-$(arch)
+	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
 hello-static-sysenter: hello.static.o sys_exit.sysenter.static.o sys_write.sysenter.static.o
 	$(LD) $(CFLAGS_ARCH32) $(LDFLAGS_STATIC) $^ -S -o $@.s
 	$(LD) $(CFLAGS_ARCH32) $(LDFLAGS_STATIC) $^ -o $@ 
-	cp $@ $(ARCHIVEROOT)/$@-$(arch)
+	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
 hello-static64: hello.static64.o sys_exit_sysenter.static64.o sys_write_sysenter.static64.o
 	$(LD) $(CFLAGS_ARCH64) $(LDFLAGS_STATIC_64) $^ -S -o $@.s
 	$(LD) $(CFLAGS_ARCH64) $(LDFLAGS_STATIC_64) $^ -o $@ 
-	cp $@ $(ARCHIVEROOT)/$@-$(arch)
+	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
 hello-dynamic: hello.o sys_exit.o sys_write.o
 	$(LD) $(CFLAGS_ARCH32) $(LDFLAGS_DYNAMIC) $^ -S -o $@.s
 	$(LD) $(CFLAGS_ARCH32) $(LDFLAGS_DYNAMIC) $^ -o $@
-	cp $@ $(ARCHIVEROOT)/$@-$(arch)
+	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
 .IGNORE: hello-static-fat
 
-hello-static-fat: $(ARCHIVEROOT)/hello-static-i386 $(ARCHIVEROOT)/hello-static-ppc
-	lipo -create $(ARCHIVEROOT)/hello-static-i386 $(ARCHIVEROOT)/hello-static-ppc -output hello-static-fat
+hello-static-fat: $(ARCHIVEROOT)/hello-static-Darwin-i386 $(ARCHIVEROOT)/hello-static-Darwin-ppc
+	lipo -create $@ -output hello-static-fat
 
 clean:
 	rm -f $(OBJROOT)/*.s $(OBJROOT)/*.o $(TARGETS)
