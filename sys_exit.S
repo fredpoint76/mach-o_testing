@@ -6,8 +6,8 @@
 #define r0 0
 #endif //__linux__
 _exit:
-	li      r0, 1       # syscall number (sys_write)
-	sc                  # call kernel
+	li      r0, 1
+	sc
 	nop
 	nop
 	blr
