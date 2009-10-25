@@ -68,7 +68,6 @@ OBJFILES =
 
 # default target for development builds
 all: subdirs $(ARCHIVEROOT) $(TARGETS) $(TEST)
-	echo $(TARGETS)
 
 # rules
 $(OBJROOT)/%.o : $(SRCROOT)/%.c
@@ -128,7 +127,7 @@ hello-dynamic: hello.o sys_exit.o sys_write.o
 
 .IGNORE: hello-static-fat
 
-hello-static-fat: $(ARCHIVEROOT)/hello-static-Darwin-i386 $(ARCHIVEROOT)/hello-static-Darwin-ppc
+hello-static-fat: $(ARCHIVEROOT)/hello-static-Darwin-i386 $(ARCHIVEROOT)/hello-static-Darwin-powerpc
 	lipo -create $^ -output hello-static-fat
 
 clean:
