@@ -1,11 +1,13 @@
 .text
 .globl _write
 
-#if __ppc__
-
+#if defined(__ppc__) || defined(__PPC__)
+#ifdef __linux__
+#define r0 0
+#endif //__linux__
 _write:
-	li      r0,4         ; syscall number (sys_write)
-	sc                  ; call kernel
+	li      r0,4        # syscall number (sys_write)
+	sc                  # call kernel
 	nop
 	nop
 	blr

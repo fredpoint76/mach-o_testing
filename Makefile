@@ -18,9 +18,9 @@ LDFLAGS_DYNAMIC =
 DIRS = 
 LD = gcc
 arch := $(shell uname -m)
-ifeq (powerpc,$(arch))
-  CFLAGS_ARCH32 = -march ppc
-  CFLAGS_ARCH64 = -march ppc64
+ifeq (ppc,$(arch))
+  CFLAGS_ARCH32 = -mpowerpc
+  CFLAGS_ARCH64 = -mppc64
   TARGETS = ${TARGETS_ALL_ARCHS}
   TEST = test-powerpc
 else
@@ -68,6 +68,7 @@ OBJFILES =
 
 # default target for development builds
 all: subdirs $(ARCHIVEROOT) $(TARGETS) $(TEST)
+	echo $(TARGETS)
 
 # rules
 $(OBJROOT)/%.o : $(SRCROOT)/%.c

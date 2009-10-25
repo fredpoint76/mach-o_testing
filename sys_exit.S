@@ -1,11 +1,13 @@
 .text
 .globl _exit
 
-#if __ppc__
-
+#if defined(__ppc__) || defined(__PPC__)
+#ifdef __linux__
+#define r0 0
+#endif //__linux__
 _exit:
-	li      r0, 1       ; syscall number (sys_write)
-	sc                  ; call kernel
+	li      r0, 1       # syscall number (sys_write)
+	sc                  # call kernel
 	nop
 	nop
 	blr
