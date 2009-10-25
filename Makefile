@@ -4,7 +4,7 @@ CFLAGS_STATIC = -static $(DEBUG) $(OFLAG) -Wall
 CFLAGS_DYNAMIC = $(DEBUG) $(OFLAG) -Wall
 
 
-TARGETS_ALL_ARCHS = hello-static hello-static-fat hello-dynamic
+TARGETS_ALL_ARCHS = hello-static hello-dynamic
 SFILES = sys_exit.S sys_write.S
 
 LIBDIRS = Csu-75
@@ -42,7 +42,7 @@ arch := $(shell uname -p)
 ifeq (powerpc,$(arch))
   CFLAGS_ARCH32 = -arch ppc
   CFLAGS_ARCH64 = -arch ppc64
-  TARGETS = ${TARGETS_ALL_ARCHS}
+  TARGETS = ${TARGETS_ALL_ARCHS} hello-static-FAT
   TEST = test-powerpc
 else
  ifneq (,$(filter i386 i486 i586 i686,$(arch)))
@@ -133,6 +133,9 @@ hello-static-fat: $(ARCHIVEROOT)/hello-static-Darwin-i386 $(ARCHIVEROOT)/hello-s
 clean:
 	rm -f $(OBJROOT)/*.s $(OBJROOT)/*.o *.core $(TARGETS)
 	-for d in $(DIRS); do (cd $$d; $(MAKE) clean ); done
+
+mrproper: clean
+	rm -f bin-arch/*
 
 test-powerpc: hello-static
 	@echo "====================="
