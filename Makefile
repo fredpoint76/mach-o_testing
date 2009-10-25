@@ -131,7 +131,7 @@ hello-static-fat: $(ARCHIVEROOT)/hello-static-Darwin-i386 $(ARCHIVEROOT)/hello-s
 	lipo -create $^ -output hello-static-fat
 
 clean:
-	rm -f $(OBJROOT)/*.s $(OBJROOT)/*.o $(TARGETS)
+	rm -f $(OBJROOT)/*.s $(OBJROOT)/*.o *.core $(TARGETS)
 	-for d in $(DIRS); do (cd $$d; $(MAKE) clean ); done
 
 test-powerpc: hello-static

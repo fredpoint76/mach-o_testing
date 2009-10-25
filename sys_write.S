@@ -26,7 +26,7 @@ _write:
 #endif //__linux__
     movl    $4, %eax    # SYS_write=4
     popl    %edx
-    pushl   $0  # <= ?????
+    pushl   $0  # FIXME: Understand what XNU expect here
     movl    %esp,%ecx
     sysenter   	#   call syscall
 
@@ -43,7 +43,7 @@ _write:
     movl    $4, %eax    # SYS_write=4
     int     $0x80   	#   call syscall
 #    mov     %ebp,%esp
-    xor     %eax,%eax
+#    xor     %eax,%eax
 #    leave
     ret
 
