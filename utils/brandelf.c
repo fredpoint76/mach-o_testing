@@ -31,6 +31,9 @@
 #include <sys/types.h>
 #ifdef __linux__
 #include <linux/elf.h>
+#elif __NetBSD__
+#include <elf.h>
+int errno;
 #else
 #include <sys/elf_common.h>
 #endif
