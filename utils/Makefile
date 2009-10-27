@@ -1,7 +1,12 @@
 LDFLAGS = -I../../kernel/include
 DIRS = 
 LD = ld
+ifneq (,$(filter Linux NetBSD FreeBSD,$(os)))
 TARGETS = brandelf
+else
+TARGETS = 
+endif
+
 
 SRCROOT = .
 SYMROOT = .
