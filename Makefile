@@ -60,7 +60,7 @@ SRCROOT = .
 SYMROOT = .
 OBJROOT = .
 ARCHIVEROOT = ./bin-arch
-
+DIRS += utils
 
 CFILES = hello.c 
 OBJFILES = 
@@ -106,22 +106,22 @@ subdirs:
 
 # targets
 hello-static: hello.static.o sys_exit.static.o sys_write.static.o
-	$(LD) $(CFLAGS_ARCH32) $(LDFLAGS_STATIC) $^ -S -o $@.s
+	# $(LD) $(CFLAGS_ARCH32) $(LDFLAGS_STATIC) $^ -S -o $@.s
 	$(LD) $(CFLAGS_ARCH32) $(LDFLAGS_STATIC) $^ -o $@
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
 hello-static-sysenter: hello.static.o sys_exit.sysenter.static.o sys_write.sysenter.static.o
-	$(LD) $(CFLAGS_ARCH32) $(LDFLAGS_STATIC) $^ -S -o $@.s
+	# $(LD) $(CFLAGS_ARCH32) $(LDFLAGS_STATIC) $^ -S -o $@.s
 	$(LD) $(CFLAGS_ARCH32) $(LDFLAGS_STATIC) $^ -o $@ 
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
 hello-static64: hello.static64.o sys_exit_sysenter.static64.o sys_write_sysenter.static64.o
-	$(LD) $(CFLAGS_ARCH64) $(LDFLAGS_STATIC_64) $^ -S -o $@.s
+	# $(LD) $(CFLAGS_ARCH64) $(LDFLAGS_STATIC_64) $^ -S -o $@.s
 	$(LD) $(CFLAGS_ARCH64) $(LDFLAGS_STATIC_64) $^ -o $@ 
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
 hello-dynamic: hello.o sys_exit.o sys_write.o
-	$(LD) $(CFLAGS_ARCH32) $(LDFLAGS_DYNAMIC) $^ -S -o $@.s
+	# $(LD) $(CFLAGS_ARCH32) $(LDFLAGS_DYNAMIC) $^ -S -o $@.s
 	$(LD) $(CFLAGS_ARCH32) $(LDFLAGS_DYNAMIC) $^ -o $@
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
@@ -135,7 +135,9 @@ clean:
 	-for d in $(DIRS); do (cd $$d; $(MAKE) clean ); done
 
 mrproper: clean
-	rm -f bin-arch/*
+	rm -f *~
+	rm -f $(ARCHIVEROOT)/*
+	-for d in $(DIRS); do (cd $$d; $(MAKE) mrproper ); done
 
 test-powerpc: hello-static
 	@echo "====================="
