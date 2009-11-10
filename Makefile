@@ -11,7 +11,7 @@ LIBDIRS = Csu-75
 
 os := $(shell uname)
 
-ifneq (,$(filter Linux NetBSD FreeBSD,$(os)))
+ifneq (,$(filter Linux NetBSD FreeBSD OpenBSD,$(os)))
 LDFLAGS_STATIC = -static
 LDFLAGS_STATIC_64 = -static
 LDFLAGS_DYNAMIC =
