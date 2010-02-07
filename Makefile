@@ -1,17 +1,19 @@
 DEBUG = -g
-OFLAG = -Os
+#OFLAG = -Os
+OFLAG =
+# -fasm-blocks
 CFLAGS_STATIC = -static $(DEBUG) $(OFLAG) -Wall
 CFLAGS_DYNAMIC = $(DEBUG) $(OFLAG) -Wall
 
 
-TARGETS_ALL_ARCHS = hello-static hello-dynamic
+TARGETS_ALL_ARCHS = hello-static hello-dynamic args
 SFILES = sys_exit.S sys_write.S
 
 LIBDIRS = Csu-75
 
 os := $(shell uname)
 
-ifneq (,$(filter Linux NetBSD FreeBSD OpenBSD,$(os)))
+ifneq (,$(filter Linux NetBSD FreeBSD,$(os)))
 LDFLAGS_STATIC = -static
 LDFLAGS_STATIC_64 = -static
 LDFLAGS_DYNAMIC =
@@ -130,6 +132,10 @@ hello-dynamic: hello.o sys_exit.o sys_write.o
 hello-static-fat: $(ARCHIVEROOT)/hello-static-Darwin-i386 $(ARCHIVEROOT)/hello-static-Darwin-powerpc
 	lipo -create $^ -output hello-static-fat
 
+args: args.static.o printf.static.o sys_exit.static.o sys_write.static.o get_stack_pointer.static.o
+	$(LD) $(CFLAGS_ARCH32) $(LDFLAGS_STATIC) $^ -o $@
+	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
+
 clean:
 	rm -f $(OBJROOT)/*.s $(OBJROOT)/*.o *.core $(TARGETS)
 	-for d in $(DIRS); do (cd $$d; $(MAKE) clean ); done
@@ -164,5 +170,11 @@ test-x86: hello-static hello-static-sysenter
 	@echo "====================="
 	@echo "Testing hello world FAT file"
 	@./hello-static-fat; echo Return: $$?
-
+	@echo 
+	@echo 
+	@echo "====================="
+	@echo "Testing args"
+	@./args
+	@echo "Testing args hello world"
+	@./args hello world
 
