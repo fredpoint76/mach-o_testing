@@ -1,5 +1,15 @@
-#if defined(__ppc__) || defined(__PPC__)
+#ifndef __APPLE__
+#define _start start
+#define write _write
+#define exit _exit
+#define get_stack_pointer _get_stack_pointer
+#endif
+
+
+
 #ifdef __linux__
+#if defined(__ppc__) || defined(__PPC__)
+
 #define r0 0
 #define r1 1
 #define r2 2
@@ -16,5 +26,6 @@
 #define r13 13
 #define r14 14
 #define r15 15
-#endif //__linux__
+
 #endif //__ppc__
+#endif //__linux__

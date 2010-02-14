@@ -1,13 +1,9 @@
+#include "asm_osx2linux.h"
 #include "printf.h"
-
-#ifndef __APPLE__
-#define _start start
-#define write _write
-#define exit _exit
-#endif
 
 extern int write(int fd, char *str, int len);
 extern void exit(int code);
+
 int mean(int a, int b) {
 	int c;
 	c = (a + b) / 2;

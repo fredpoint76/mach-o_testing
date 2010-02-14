@@ -1,11 +1,5 @@
+#include "asm_osx2linux.h"
 #include "printf.h"
-
-#ifndef __APPLE__
-#define _start start
-#define write _write
-#define exit _exit
-#define get_stack_pointer _get_stack_pointer
-#endif
 
 extern int write(int fd, char *str, int len);
 extern void exit(int code);
