@@ -18,7 +18,13 @@ extern int write(int fd, char *str, int len);
 
 static void printchar(char **str, int c)
 {
-	write(str, &c, 1);
+#if defined(__ppc__) || defined(__PPC__)
+	char ch;
+	ch = c;
+	write(1, &ch, 1);
+#else
+	write(1, &c, 1);
+#endif
 }
 #define PAD_RIGHT 1
 #define PAD_ZERO 2

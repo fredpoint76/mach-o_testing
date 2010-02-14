@@ -1,10 +1,9 @@
+#include "asm_osx2linux.h"
+
 .text
 .globl _exit
 
 #if defined(__ppc__) || defined(__PPC__)
-#ifdef __linux__
-#define r0 0
-#endif //__linux__
 _exit:
 	li      r0, 1
 	sc

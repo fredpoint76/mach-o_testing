@@ -21,12 +21,12 @@ int main(int argc, char *argv[]) {
 
 	printf("argc: %d [%X]\n", argc, (unsigned int)&argc); 
 	printf("Stack pointer: %X\n", (unsigned int) addr_sp); 
-#endif
 
 	for(i=0; i < argc; i++)
 		printf("argv[%d] at %08X point to %08X => %s\n", i, 
 			(unsigned int) &argv[i], (unsigned int) argv[i], argv[i]);
 
+#endif
 #if 1
 #ifdef __APPLE__ 
 //	for(p = (unsigned int *)0xBFFFFFF0 ; p > 0xBF000000; p--) {

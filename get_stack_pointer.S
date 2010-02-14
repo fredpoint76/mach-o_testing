@@ -1,13 +1,11 @@
+#include "asm_osx2linux.h"
+
 .text
 .globl _get_stack_pointer
 
 #if defined(__ppc__) || defined(__PPC__)
-#ifdef __linux__
-#define r0 0
-#endif //__linux__
-# !!!FIXME!!! Implement this
 _get_stack_pointer:
-	nop
+	addze r3, r1
 	blr
 
 #elif __i386__
