@@ -4,6 +4,7 @@
 #define _start start
 #define write _write
 #define exit _exit
+#define get_stack_pointer _get_stack_pointer
 #endif
 
 extern int write(int fd, char *str, int len);
@@ -28,9 +29,8 @@ int main(int argc, char *argv[]) {
 
 #endif
 #if 1
-#ifdef __APPLE__ 
-//	for(p = (unsigned int *)0xBFFFFFF0 ; p > 0xBF000000; p--) {
-	for(p = (unsigned int *)0xBFFFFFF0 ; p > 0xBFFFF600; p--) {
+//	for(p = (unsigned int *)0xBFFFFFF0 ; p > (unsigned int *)0xBF000000; p--) {
+	for(p = (unsigned int *)0xBFFFFFF0 ; p > (unsigned int *)0xBFFFF600; p--) {
 		j = *p;
 		a = j >> 24;
 		b = j >> 16;
@@ -39,7 +39,6 @@ int main(int argc, char *argv[]) {
 		printf("at %X => %X : %c %c %c %c\n", (unsigned int)p , (unsigned int)j,
 			a, b, c, d);
 	}
-#endif
 #endif
 	return 0;
 }

@@ -23,7 +23,7 @@ static void printchar(char **str, int c)
 	ch = c;
 	write(1, &ch, 1);
 #else
-	write(1, &c, 1);
+	write(1, (char *) &c, 1);
 #endif
 }
 #define PAD_RIGHT 1
