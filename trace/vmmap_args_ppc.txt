@@ -1,0 +1,30 @@
+Virtual Memory Map of process 2358 (args)
+Output report format:  2.0
+
+dyldNameStartingAtAddress:vm_read header (os/kern) invalid address
+dyldNameStartingAtAddress:vm_read header (os/kern) invalid address
+dyldNameStartingAtAddress:vm_read header (os/kern) invalid address
+==== Non-writable regions for process 2358
+STACK GUARD            00000000-00001000 [    4K] ---/--- SM=NUL  
+mapped file            00001000-00002000 [    4K] r-x/rwx SM=COW  /Users/fred/Documents/mach-o/mach-o_testing/args
+mapped file            00003000-00005000 [    8K] r--/rwx SM=COW  /Users/fred/Documents/mach-o/mach-o_testing/args
+shared memory          ffff8000-ffffa000 [    8K] r--/r-- SM=SHM  
+
+==== Writable regions for process 2358
+mapped file            00002000-00003000 [    4K] rw-/rwx SM=COW  /Users/fred/Documents/mach-o/mach-o_testing/args
+Stack                  bf800000-c0000000 [ 8192K] rw-/rwx SM=COW  thread 0
+
+==== Legend
+SM=sharing mode:  
+	COW=copy_on_write PRV=private NUL=empty ALI=aliased 
+	SHM=shared ZER=zero_filled S/A=shared_alias
+
+==== Summary for process 2358
+Writable regions: Total=8192KB written=0KB(0%) resident=84KB(1%) swapped_out=0KB(0%) unallocated=8108KB(99%)
+
+REGION TYPE             [ VIRTUAL]
+===========             [ =======]
+STACK GUARD             [      4K]
+Stack                   [   8192K]
+mapped file             [     16K]
+shared memory           [      8K]
