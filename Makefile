@@ -6,7 +6,7 @@ OFLAG =
 CFLAGS = $(DEBUG) $(OFLAG) -Wall
 STATIC = -static
 
-TARGETS_ALL_ARCHS = hello-static hello-dynamic args func
+TARGETS_ALL_ARCHS = hello-static hello-static-64 hello-dynamic hello-dynamic-64 args func
 SFILES = sys_exit.S sys_write.S
 
 LIBDIRS = Csu-75
@@ -58,6 +58,7 @@ LDFLAGS_GEN_DYNAMIC = -L./Csu-75 -lcrt1.o -lgcc_s.10.5 -lSystem
 ifeq (powerpc,$(arch))
   ARCH32 = -arch ppc
   ARCH64 = -arch ppc64
+  ARCHS = ppc ppc64
   CFLAGS_STATIC = $(CFLAGS) $(ARCH32) $(STATIC) -fno-builtin-printf
   CFLAGS_STATIC_64 = $(CFLAGS) $(ARCH64) $(STATIC) -fno-builtin-printf
   CFLAGS_DYNAMIC = $(CFLAGS) $(ARCH32)
@@ -72,6 +73,7 @@ else
  ifneq (,$(filter i386 i486 i586 i686,$(arch)))
   ARCH32 = -arch i386
   ARCH64 = -arch x86_64
+  ARCHS = i386 x86_64
   CFLAGS_STATIC = $(CFLAGS) $(ARCH32) $(STATIC)
   CFLAGS_STATIC_64 = $(CFLAGS) $(ARCH64) $(STATIC)
   CFLAGS_DYNAMIC = $(CFLAGS) $(ARCH32)
@@ -80,7 +82,7 @@ else
   LDFLAGS_STATIC_64 = $(ARCH64) $(STATIC) $(LDFLAGS_GEN_STATIC)
   LDFLAGS_DYNAMIC = $(ARCH32) $(LDFLAGS_GEN_DYNAMIC)
   LDFLAGS_DYNAMIC_64 = $(ARCH64) $(LDFLAGS_GEN_DYNAMIC)
-  TARGETS = ${TARGETS_ALL_ARCHS} hello-static-sysenter
+  TARGETS = ${TARGETS_ALL_ARCHS} hello-static-sysenter hello-static-sysenter-64
   TEST = test-x86
  endif
 endif
@@ -101,42 +103,48 @@ OBJFILES =
 # default target for development builds
 all: subdirs $(ARCHIVEROOT) $(TARGETS) $(TEST)
 
-# rules
-$(OBJROOT)/%.o : $(SRCROOT)/%.c
-	$(CC) -c $(CFLAGS_DYNAMIC) $^ -o $@
-	
-$(OBJROOT)/%.o : %.S
-	$(CC) -c $(CFLAGS_DYNAMIC) $^ -o $@
-
-$(OBJROOT)/%.64.o : %.c
-	$(CC) -c $(CFLAGS_DYNAMIC) -m64 $^ -o $@
-	
-$(OBJROOT)/%.64.o : %.S
-	$(CC) -c $(CFLAGS_DYNAMIC) -m64 $^ -o $@
-
+# rules for static binaries
 $(OBJROOT)/%.static.o : $(SRCROOT)/%.c
 	$(CC) -c $(CFLAGS_STATIC) $^ -o $@
 	
-$(OBJROOT)/%.static.o : %.S
+$(OBJROOT)/%.static.o : $(SRCROOT)/%.S
 	$(CC) -c $(CFLAGS_STATIC) $^ -o $@
 
-$(OBJROOT)/%.sysenter.static.o : %.S
+$(OBJROOT)/%.sysenter.static.o : $(SRCROOT)/%.S
 	$(CC) -c $(CFLAGS_STATIC) -DSYSENTER $^ -o $@
 
-$(OBJROOT)/%.static.64.o : %.c
-	$(CC) -c $(CFLAGS_STATIC_64) -m64 $^ -o $@
+$(OBJROOT)/%.static.64.o : $(SRCROOT)/%.c
+	$(CC) -c $(CFLAGS_STATIC_64) $^ -o $@
 	
-$(OBJROOT)/%.static.64.o : %.S
-	$(CC) -c $(CFLAGS_STATIC_64) -m64 $^ -o $@
+$(OBJROOT)/%.static.64.o : $(SRCROOT)/%.S
+	$(CC) -c $(CFLAGS_STATIC_64) $^ -o $@
+
+$(OBJROOT)/%.sysenter.static.64.o : $(SRCROOT)/%.S
+	$(CC) -c $(CFLAGS_STATIC_64) -DSYSENTER $^ -o $@
+
+# rules for dynamic binaries
+$(OBJROOT)/%.o : $(SRCROOT)/%.c
+	$(CC) -c $(CFLAGS_DYNAMIC) $^ -o $@
+	
+$(OBJROOT)/%.o : $(SRCROOT)/%.S
+	$(CC) -c $(CFLAGS_DYNAMIC) $^ -o $@
+
+$(OBJROOT)/%.64.o : $(SRCROOT)/%.c
+	$(CC) -c $(CFLAGS_DYNAMIC_64) $^ -o $@
+	
+$(OBJROOT)/%.64.o : $(SRCROOT)/%.S
+	$(CC) -c $(CFLAGS_DYNAMIC_64) $^ -o $@
+
+
 
 $(ARCHIVEROOT):
 	mkdir $(ARCHIVEROOT)
 
 subdirs:
-	-for d in $(DIRS); do (cd $$d; $(MAKE)); done
+	-for d in $(DIRS); do (cd $$d; $(MAKE) RC_ARCHS="$(ARCHS)"); done
 
 
-# targets
+# Static targets
 hello-static: hello.static.o sys_exit.static.o sys_write.static.o
 	$(LD) $(LDFLAGS_STATIC) $^ -o $@
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
@@ -145,18 +153,13 @@ hello-static-sysenter: hello.static.o sys_exit.sysenter.static.o sys_write.sysen
 	$(LD) $(LDFLAGS_STATIC) $^ -o $@ 
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
-hello-static-64: hello.static64.o sys_exit_sysenter.static64.o sys_write_sysenter.static64.o
+hello-static-64: hello.static.64.o sys_exit.sysenter.static.64.o sys_write.sysenter.static.64.o
 	$(LD) $(LDFLAGS_STATIC_64) $^ -o $@ 
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
-hello-dynamic: hello.o sys_exit.o sys_write.o
-	$(LD) $(LDFLAGS_DYNAMIC) $^ -o $@
+hello-static-sysenter-64: hello.static.64.o sys_exit.sysenter.static.64.o sys_write.sysenter.static.64.o
+	$(LD) $(LDFLAGS_STATIC_64) $^ -o $@ 
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
-
-.IGNORE: hello-static-fat
-
-hello-static-fat: $(ARCHIVEROOT)/hello-static-Darwin-i386 $(ARCHIVEROOT)/hello-static-Darwin-powerpc
-	lipo -create $^ -output hello-static-fat
 
 args: args.static.o printf.static.o sys_exit.static.o sys_write.static.o get_stack_pointer.static.o
 	$(LD) $(LDFLAGS_STATIC) $^ -o $@
@@ -165,6 +168,20 @@ args: args.static.o printf.static.o sys_exit.static.o sys_write.static.o get_sta
 func: func.static.o sys_exit.static.o sys_write.static.o
 	$(LD) $(LDFLAGS_STATIC) $^ -o $@
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
+
+# Dynamic targets
+hello-dynamic: hello.o sys_exit.o sys_write.o
+	$(LD) $(LDFLAGS_DYNAMIC) $^ -o $@
+	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
+
+hello-dynamic-64: hello.static.64.o sys_exit.sysenter.static.64.o sys_write.sysenter.static.64.o
+	$(LD) $(LDFLAGS_STATIC_64) $^ -o $@ 
+	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
+
+.IGNORE: hello-static-fat
+
+hello-static-fat: $(ARCHIVEROOT)/hello-static-Darwin-i386 $(ARCHIVEROOT)/hello-static-Darwin-powerpc
+	lipo -create $^ -output hello-static-fat
 
 clean:
 	rm -f $(OBJROOT)/*.s $(OBJROOT)/*.o *.core $(TARGETS)
