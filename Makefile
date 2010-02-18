@@ -178,12 +178,12 @@ func-64: func.static.64.o sys_exit.static.64.o sys_write.static.64.o
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
 # Dynamic targets
-hello-dynamic: hello.o sys_exit.o sys_write.o
+hello-dynamic: hello.o
 	$(LD) $(LDFLAGS_DYNAMIC) $^ -o $@
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
-hello-dynamic-64: hello.static.64.o sys_exit.sysenter.static.64.o sys_write.sysenter.static.64.o
-	$(LD) $(LDFLAGS_STATIC_64) $^ -o $@ 
+hello-dynamic-64: hello.64.o
+	$(LD) $(LDFLAGS_DYNAMIC_64) $^ -o $@ 
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
 .IGNORE: hello-static-fat
