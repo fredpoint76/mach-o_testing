@@ -6,7 +6,7 @@ OFLAG =
 CFLAGS = $(DEBUG) $(OFLAG) -Wall
 STATIC = -static
 
-TARGETS_ALL_ARCHS = hello-static hello-static-64 hello-dynamic hello-dynamic-64 args func
+TARGETS_ALL_ARCHS = hello-static hello-static-64 hello-dynamic hello-dynamic-64 args args-64 func func-64
 SFILES = sys_exit.S sys_write.S
 
 LIBDIRS = Csu-75
@@ -165,8 +165,16 @@ args: args.static.o printf.static.o sys_exit.static.o sys_write.static.o get_sta
 	$(LD) $(LDFLAGS_STATIC) $^ -o $@
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
+args-64: args.static.64.o printf.static.64.o sys_exit.static.64.o sys_write.static.64.o get_stack_pointer.static.64.o
+	$(LD) $(LDFLAGS_STATIC_64) $^ -o $@
+	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
+
 func: func.static.o sys_exit.static.o sys_write.static.o
 	$(LD) $(LDFLAGS_STATIC) $^ -o $@
+	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
+
+func-64: func.static.64.o sys_exit.static.64.o sys_write.static.64.o
+	$(LD) $(LDFLAGS_STATIC_64) $^ -o $@
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
 # Dynamic targets

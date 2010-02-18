@@ -3,7 +3,7 @@
 .text
 .globl _get_stack_pointer
 
-#if defined(__ppc__) || defined(__PPC__)
+#if defined(__ppc__) || defined(__PPC__)  || defined(__ppc64__)
 _get_stack_pointer:
 	addze r3, r1
 	blr
