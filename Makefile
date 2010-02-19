@@ -54,7 +54,7 @@ arch := $(shell uname -p)
 DIRS = $(LIBDIRS)
 LD = ld
 LDFLAGS_GEN_STATIC = -L./Csu-75 -lcrt0.o
-LDFLAGS_GEN_DYNAMIC = -L./Csu-75 -lcrt1.o -lgcc_s.10.5 -lSystem
+LDFLAGS_GEN_DYNAMIC =
 ifeq (powerpc,$(arch))
   ARCH32 = -arch ppc
   ARCH64 = -arch ppc64
@@ -178,12 +178,13 @@ func-64: func.static.64.o sys_exit.static.64.o sys_write.static.64.o
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
 # Dynamic targets
+# Let do the linkage by gcc
 hello-dynamic: hello.o
-	$(LD) $(LDFLAGS_DYNAMIC) $^ -o $@
+	$(CC) $(LDFLAGS_DYNAMIC) $^ -o $@
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
 hello-dynamic-64: hello.64.o
-	$(LD) $(LDFLAGS_DYNAMIC_64) $^ -o $@ 
+	$(CC) $(LDFLAGS_DYNAMIC_64) $^ -o $@ 
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
 .IGNORE: hello-static-fat
