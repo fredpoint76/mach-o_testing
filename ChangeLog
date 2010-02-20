@@ -1,0 +1,168 @@
+2010-02-18 19:41  fred
+
+	* [r54] Add PPC64 asm support (Maybe incomplete/wrong for
+	  get_stack_pointer function)
+
+2010-02-17 22:23  fred
+
+	* [r49] Add some binaries (Mach-o Darwin ppc64)
+
+2010-02-16 07:07  fred
+
+	* [r48] Code refactoring (sys_*, Makefile)
+
+2010-02-14 22:11  fred
+
+	* [r47] Code cleanup (move some define to asm_osx2linux.h)
+
+2010-02-14 22:03  fred
+
+	* [r46] Add some binaries (Linux ppc)
+
+2010-02-14 21:23  fred
+
+	* [r45] Add some binaries (Mach-o i386)
+
+2010-02-14 21:20  fred
+
+	* [r44] Add some binaries (Mach-o Darwin)
+
+2010-02-14 21:19  fred
+
+	* [r43] Add some binaries (Elf Linux)
+
+2010-02-14 20:41  fred
+
+	* [r42] Fix linux compilation
+
+2010-02-14 19:19  fred
+
+	* [r41] Port new testing mach-o executables to PPC (add missing
+	  files)
+
+2010-02-14 19:07  fred
+
+	* [r40] Port new testing mach-o executables to PPC
+
+2010-02-07 02:14  fred
+
+	* [r39] Add minimal printf library (Useful for debugging). Add
+	  args testing (argv, envv)
+
+2009-11-14 11:04  fred
+
+	* [r37] Brand Elf to their appropriate platform
+
+2009-11-10 18:25  fred
+
+	* [r36] Add OpenBSD support
+
+2009-10-27 02:15  fred
+
+	* [r34] Disabling brandelf compilation on Darwin
+
+2009-10-27 02:09  fred
+
+	* [r33] brandelf on NetBSD works now
+
+2009-10-27 01:22  fred
+
+	* [r32] Import brandelf (compile on Linux)
+
+2009-10-25 13:43  fred
+
+	* [r31] Add Mr Proper target in Makefile
+
+2009-10-25 13:36  fred
+
+	* [r30] Small fixups in asm write
+
+2009-10-25 13:18  fred
+
+	* [r29] Add FreeBSD static and dynamic files in bin-arch
+
+2009-10-25 11:33  fred
+
+	* [r28] Add NetBSD file in bin-arch
+
+2009-10-25 11:20  fred
+
+	* [r27] Remove duplicated files in bin-arch
+
+2009-10-25 11:17  fred
+
+	* [r26] Replace FreeBSD files by Darwin files in bin-arch
+
+2009-10-25 11:13  fred
+
+	* [r25] Rename files in bin-arch
+
+2009-10-25 11:06  fred
+
+	* [r24] Makefile typo
+
+2009-10-25 11:01  fred
+
+	* [r23] Rename file in bin-arch
+
+2009-10-25 10:48  fred
+
+	* [r22] Remove comments in asm part which are not compatible
+	  between Darwin and Linux
+
+2009-10-25 01:50  fred
+
+	* [r21] linux powerpc sc works
+
+2009-10-24 16:03  fred
+
+	* [r20] Typo in Makefile for FAT
+
+2009-10-24 16:00  fred
+
+	* [r19] FreeBSD int 80
+
+2009-10-24 15:00  fred
+
+	* [r18] linux int 80
+
+2009-10-22 20:13  fred
+
+	* [r17] Should now really compile on Darwin, Linux and NetBSD
+
+2009-10-22 19:56  fred
+
+	* [r16] Should now compile on Darwin, Linux and NetBSD
+
+2009-10-11 21:47  fred
+
+	* [r13] fix ppc Makefile 3
+
+2009-10-11 21:39  fred
+
+	* [r12] fix ppc Makefile 2
+
+2009-10-11 21:37  fred
+
+	* [r11] fix ppc Makefile
+
+2009-10-11 21:26  fred
+
+	* [r10] Put the asm for specific in one file
+
+2009-10-05 23:10  fred
+
+	* [r9] Make Makefile recursive
+
+2009-10-05 22:30  fred
+
+	* [r8] typo in Makefile
+
+2009-10-05 22:26  fred
+
+	* [r7] run now on tiger PPC
+
+2009-10-05 21:14  fred
+
+	* [r6] Initial import
+
