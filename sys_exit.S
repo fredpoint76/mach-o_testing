@@ -53,12 +53,18 @@ _exit:
     movq    12(%rsp), %rdx
     movq    16(%rsp), %rsi
     movq    20(%rsp), %rdi
-#endif // __linux__
     movq    $1, %rax    # SYS_exit=1
     popq    %rdx
     pushq   $0
     movq    %rsp,%rcx
     sysenter   	#   call syscall
+#else // __linux__
+    movl    $0x02000001, %eax
+    movq    %rcx, %r10
+    syscall
+    ret
+#endif // __linux__
+
 
 #else // SYSENTER
 #ifdef __linux__
@@ -72,6 +78,18 @@ _exit:
     int     $0x80   #   call syscall
     ret
 #endif // SYSENTER
+
+################################################################################
+#elif defined(__arm__)
+################################################################################
+#ifdef __linux__
+	mov             r7, #1
+	swi             0
+#else // Darwin
+	mov             r12, #1
+	swi             128
+#endif
+	mov		pc, lr
 
 ################################################################################
 #endif // Architectures

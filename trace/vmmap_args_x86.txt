@@ -1,0 +1,39 @@
+MacPro mach-o_testing $ vmmap args
+Virtual Memory Map of process 4698 (args)
+Output report format:  2.2  -- 32-bit process
+
+dyldNameStartingAtAddress:vm_read header (os/kern) invalid address
+vmutils: can't find image for dynamic loader used by ./args [4698]!
+dyldNameStartingAtAddress:vm_read header (os/kern) invalid address
+vmutils: can't find image for dynamic loader used by ./args [4698]!
+2010-01-24 18:54:52.983 vmmap[5361:10b] *** task_malloc_get_all_zones: error reading zones_address at 0
+2010-01-24 18:54:52.984 vmmap[5361:10b] *** vmutils: Can't get malloc zones for task_get_malloc_ranges_by_zone
+dyldNameStartingAtAddress:vm_read header (os/kern) invalid address
+vmutils: can't find image for dynamic loader used by ./args [4698]!
+2010-01-24 18:54:52.985 vmmap[5361:10b] *** task_malloc_get_all_zones: error reading zones_address at 0
+2010-01-24 18:54:52.986 vmmap[5361:10b] *** vmutils: Can't get malloc zones for task_get_malloc_ptrs: (os/kern) protection failure
+==== Non-writable regions for process 4698
+STACK GUARD            00000000-00001000 [    4K] ---/--- SM=NUL  
+mapped file            00001000-00002000 [    4K] r-x/rwx SM=COW  ...esting/args
+mapped file            00003000-00004000 [    4K] r--/rw- SM=COW  ...esting/args
+STACK GUARD            bc000000-bf800000 [ 56.0M] ---/rwx SM=NUL  
+
+==== Writable regions for process 4698
+mapped file            00002000-00003000 [    4K] rw-/rw- SM=COW  ...esting/args
+Stack                  bf800000-bffff000 [ 8188K] rw-/rwx SM=PRV  
+Stack                  bffff000-c0000000 [    4K] rw-/rwx SM=COW  thread 0
+
+==== Legend
+SM=sharing mode:  
+	COW=copy_on_write PRV=private NUL=empty ALI=aliased 
+	SHM=shared ZER=zero_filled S/A=shared_alias
+
+==== Summary for process 4698
+Writable regions: Total=8192K written=0K(0%) resident=4K(0%) swapped_out=0K(0%) unallocated=8188K(100%)
+
+REGION TYPE             [ VIRTUAL]
+===========             [ =======]
+STACK GUARD             [   56.0M]
+Stack                   [   8192K]
+mapped file             [     12K]
+
