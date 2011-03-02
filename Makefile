@@ -201,14 +201,12 @@ hello-static-sysenter-64: hello.static.64.o sys_exit.sysenter.static.64.o sys_wr
 	$(LD) $(LDFLAGS_STATIC_64) $^ -o $@ 
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
-#args: args.static.o printf.static.o strcmp.static.o sys_exit.static.o sys_write.static.o get_stack_pointer.static.o asm_hack_arm.static.o
-args: args.static.o printf.static.o sys_exit.static.o sys_write.static.o get_stack_pointer.static.o asm_hack_arm.static.o
+args: args.static.o printf.static.o strcmp.static.o sys_exit.static.o sys_write.static.o get_stack_pointer.static.o asm_hack_arm.static.o
 	$(LD) $(LDFLAGS_STATIC) $^ -o $@
 	if [ -n "$(LDID)" ]; then $(LDID) -S $@; fi
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 
-#args-64: args.static.64.o printf.static.64.o strcmp.static.64.o sys_exit.static.64.o sys_write.static.64.o get_stack_pointer.static.64.o
-args-64: args.static.64.o printf.static.64.o sys_exit.static.64.o sys_write.static.64.o get_stack_pointer.static.64.o
+args-64: args.static.64.o printf.static.64.o strcmp.static.64.o sys_exit.static.64.o sys_write.static.64.o get_stack_pointer.static.64.o
 	$(LD) $(LDFLAGS_STATIC_64) $^ -o $@
 	cp $@ $(ARCHIVEROOT)/$@-$(os)-$(arch)
 

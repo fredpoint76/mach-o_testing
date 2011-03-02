@@ -1,24 +1,31 @@
 #include "printf.h"
-#if 0
 #include "strcmp.h"
-#endif
+
 extern int write(int fd, char *str, int len);
 extern void exit(int code);
 extern unsigned int *get_stack_pointer();
-
+ 
 #ifdef __linux__
 // TBD
 #else
 	#if defined(__ppc__) || defined(__PPC__) || defined(__ppc64__)
+	// FIXME
 	#elif __i386__
-	#define START_BEGIN 0xBFFFFFF0
-	#define STACK_END 	0xBF800000
+	#define STACK_LINUX_BEGIN	(unsigned int *)0xC0000000
+	#define STACK_LINUX_END		(unsigned int *)0xBFFDE000
+	#define STACK_BEGIN 		(unsigned int *)0xBFFFFFF0
+	#define STACK_END			(unsigned int *)0xBF800000
 	#elif __x86_64__
 	// FIXME
-	#define START_BEGIN 0x0
+	#define STACK_LINUX_BEGIN 0x0
+	#define STACK_LINUX_END   0x0
+	#define STACK_BEGIN 0x0
 	#define STACK_END 	0x0
 	#elif __arm__
-	#define START_BEGIN 0x2ffff935
+	// FIXME
+	#define STACK_LINUX_BEGIN 0x0
+	#define STACK_LINUX_END   0x0
+	#define STACK_BEGIN 0x2ffff935
 	#define STACK_END 	0x2ffff1c0
 	#endif
 #endif
@@ -29,7 +36,6 @@ int main(int argc, char *argv[], char *envp[]) {
 	addr_sp = (unsigned int *) get_stack_pointer();
 	printf("Stack pointer: %X\n", (unsigned int) addr_sp); 
 	printf("argc: %d [%X]\n", argc, (unsigned int)&argc); 
-	printf("Stack pointer: %X\n", (unsigned int) addr_sp); 
 
 	printf("\n");
 	for(i=0; i < argc; i++)
@@ -42,18 +48,22 @@ int main(int argc, char *argv[], char *envp[]) {
 			(unsigned int) &envp[i], (unsigned int) envp[i], envp[i]);
 
 
-#if 0
+#if 1
 	{
-		unsigned int *p;
+		unsigned int *p, *begin, *end;
 		char a, b, c, d;
-
-		printf("\n");
+		
+		begin = STACK_LINUX_BEGIN;
+		end = STACK_LINUX_END;
+		
 		for(i=0; envp[i]; i++) {
 			if(strncmp(envp[i], "TERM_PROGRAM", 12) == 0) {
-				
+				printf("We are running on OSX\n");
+				begin = STACK_BEGIN;
+				end = STACK_END;
 			}
 		}
-		for(p = (unsigned int *)START_BEGIN; p >= (unsigned int *)STACK_END; p--) {
+		for(p = begin; p >= end; p--) {
 			i = *p;
 			a = i >> 24;
 			b = i >> 16;
