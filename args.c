@@ -10,23 +10,25 @@ extern unsigned int *get_stack_pointer();
 #else
 	#if defined(__ppc__) || defined(__PPC__) || defined(__ppc64__)
 	// FIXME
-	#elif __i386__
-	#define STACK_LINUX_BEGIN	(unsigned int *)0xC0000000
+	#elif __i386__	
+	#define STACK_LINUX_BEGIN	(unsigned int *)0xBFFFFFFC
 	#define STACK_LINUX_END		(unsigned int *)0xBFFDE000
-	#define STACK_BEGIN 		(unsigned int *)0xBFFFFFF0
-	#define STACK_END			(unsigned int *)0xBF800000
+	#define STACK_LINUX_SIZE	(unsigned int *)0x1FFF
+	#define STACK_OSX_BEGIN 	(unsigned int *)0xBFFFFFFC
+	#define STACK_OSX_END		(unsigned int *)0xBF800000
+	#define STACK_OSX_SIZE		(unsigned int *)0x7FFFF0
 	#elif __x86_64__
 	// FIXME
 	#define STACK_LINUX_BEGIN 0x0
 	#define STACK_LINUX_END   0x0
-	#define STACK_BEGIN 0x0
-	#define STACK_END 	0x0
+	#define STACK_OSX_BEGIN  0x0
+	#define STACK_OSX_END 	0x0
 	#elif __arm__
 	// FIXME
 	#define STACK_LINUX_BEGIN 0x0
 	#define STACK_LINUX_END   0x0
-	#define STACK_BEGIN 0x2ffff935
-	#define STACK_END 	0x2ffff1c0
+	#define STACK_OSX_BEGIN  0x2ffff935
+	#define STACK_OSX_END 	0x2ffff1c0
 	#endif
 #endif
 
@@ -57,10 +59,10 @@ int main(int argc, char *argv[], char *envp[]) {
 		end = STACK_LINUX_END;
 		
 		for(i=0; envp[i]; i++) {
-			if(strncmp(envp[i], "TERM_PROGRAM", 12) == 0) {
+			if(strncmp(envp[i], "TERM_PROGRAM=Apple_Terminal", 27) == 0) {
 				printf("We are running on OSX\n");
-				begin = STACK_BEGIN;
-				end = STACK_END;
+				begin = STACK_OSX_BEGIN ;
+				end = STACK_OSX_END;
 			}
 		}
 		for(p = begin; p >= end; p--) {
