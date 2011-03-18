@@ -23,12 +23,13 @@ extern unsigned int *get_stack_pointer();
 	#define STACK_LINUX_END   0x0
 	#define STACK_OSX_BEGIN  0x0
 	#define STACK_OSX_END 	0x0
+	#define STACK_OSX_BEGIN  0x0
 	#elif __arm__
 	// FIXME
 	#define STACK_LINUX_BEGIN 0x0
 	#define STACK_LINUX_END   0x0
-	#define STACK_OSX_BEGIN  0x2ffff935
-	#define STACK_OSX_END 	0x2ffff1c0
+	#define STACK_OSX_BEGIN  0x36000000
+	#define STACK_OSX_END 	0x2ff00000
 	#endif
 #endif
 
